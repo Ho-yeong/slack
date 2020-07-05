@@ -1,15 +1,9 @@
 import express from "express";
+import "./db";
+import app from "./app";
 import dotenv from "dotenv";
 
 dotenv.config();
-
-const app = express();
-
-app.get("/", (req, res) => {
-  res.json({
-    msg: "안녕",
-  });
-});
 
 const PORT = process.env.PORT;
 

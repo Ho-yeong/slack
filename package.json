@@ -9,6 +9,7 @@
   "author": "simon",
   "license": "ISC",
   "dependencies": {
+    "apollo-server-express": "^2.15.1",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-3": "^6.24.1",
@@ -16,7 +17,9 @@
     "express": "^4.17.1",
     "express-graphql": "^0.10.0",
     "graphql-tools": "^6.0.12",
-    "mongoose": "^5.9.21"
+    "mongoose": "^5.9.21",
+    "passport": "^0.4.1",
+    "passport-local-mongoose": "^6.0.1"
   },
   "devDependencies": {
     "eslint": "^7.4.0",
