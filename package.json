@@ -1,0 +1,27 @@
+{
+  "name": "slack-clone",
+  "version": "1.0.0",
+  "description": "building slack-clone with Node.js, graphql, mongodb",
+  "main": "init.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node init.js"
+  },
+  "author": "simon",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.10.0",
+    "graphql-tools": "^6.0.12",
+    "mongoose": "^5.9.21"
+  },
+  "devDependencies": {
+    "eslint": "^7.4.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "nodemon": "^2.0.4"
+  }
+}
