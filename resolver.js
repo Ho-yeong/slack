@@ -1,5 +1,12 @@
-export default {
+export const resolvers = {
   Query: {
-    hi: (parent, args, context, info) => "hi",
+    async allUser() {
+      return await User.find();
+    },
+  },
+  Mutation: {
+    async createUser(root, { input }) {
+      return await User.create(input);
+    },
   },
 };

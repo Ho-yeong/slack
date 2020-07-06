@@ -3,6 +3,7 @@ import { ApolloServer, gql } from "apollo-server-express";
 
 import typeDefs from "./schema";
 import resolvers from "./resolver";
+import Connectors from "./connector";
 
 const app = express();
 const path = "/graphql";
