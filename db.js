@@ -19,11 +19,6 @@ mongoose.connect(process.env.MONGO_URL, {
   useUnifiedTopology: true,
 });
 
-dummnyData.map((data) => {
-  const dummny = new User(data);
-  dummny.save();
-});
-
 const db = mongoose.connection;
 
 mongoose.Promise = global.Promise;

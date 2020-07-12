@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const TeamSchema = new mongoose.Schema({
-  teamId: { requeird: true, type: Number },
   name: String,
   owner: {
     type: mongoose.Schema.Types.ObjectId,

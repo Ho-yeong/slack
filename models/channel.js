@@ -1,12 +1,17 @@
 import mongoose from "mongoose";
 
 const ChannelSchema = new mongoose.Schema({
-  channelId: { requeird: true, type: Number },
   name: String,
-  teamId: {
+  team: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Team",
   },
+  users: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   public: Boolean,
 });
 

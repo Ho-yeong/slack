@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const MessagesSchema = new mongoose.Schema({
   text: String,
-  channelId: {
+  channel: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Channel",
   },
-  userId: {
+  username: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
