@@ -4,4 +4,10 @@ type Team {
     members : [User!]
     channels : [Channel!]!
 }
+input TeamInput {
+    name : String!
+}
+type Mutation {
+    createTeam(input : TeamInput): Boolean
+}
 `;
