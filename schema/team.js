@@ -8,6 +8,6 @@ input TeamInput {
     name : String!
 }
 type Mutation {
-    createTeam(input : TeamInput): Boolean
+    createTeam(input : TeamInput): Boolean!
 }
 `;

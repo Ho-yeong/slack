@@ -14,7 +14,16 @@ const resolvers = mergeResolvers(
 
 const app = express();
 const graphqlPath = "/graphql";
-const server = new ApolloServer({ typeDefs, resolvers, tracing: true });
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  tracing: true,
+  context: {
+    user: {
+      id: "5f0b29203b254440341d7864",
+    },
+  },
+});
 server.applyMiddleware({ app, graphqlPath });
 
 app.get("/", (req, res) => {

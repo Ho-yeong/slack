@@ -13,14 +13,5 @@ export default {
     async createUser(_, { input }) {
       return await User.create(input);
     },
-    async createUser(_, { input }) {
-      try {
-        await Team.create(input);
-        return true;
-      } catch (error) {
-        console.log(error);
-        return false;
-      }
-    },
   },
 };

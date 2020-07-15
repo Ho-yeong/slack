@@ -1,10 +1,10 @@
-import Team from "../models/team";
+import Message from "../models/messages";
 
 export default {
   Mutation: {
-    async createTeam(_, { input }, { user }) {
+    async createMessage(_, { input }, { user }) {
       try {
-        await Team.create({ ...input, owner: user.id });
+        await Message.create({ ...input, username: user.id });
         return true;
       } catch (error) {
         console.log(error);
