@@ -5,7 +5,8 @@ import Connectors from "./connector";
 
 import path from "path";
 import { fileLoader, mergeTypes, mergeResolvers } from "merge-graphql-schemas";
-import { trace } from "console";
+
+import cors from "cors";
 
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, "./schema")));
 const resolvers = mergeResolvers(
@@ -13,6 +14,8 @@ const resolvers = mergeResolvers(
 );
 
 const app = express();
+app.use(cors("*"));
+
 const graphqlPath = "/graphql";
 const server = new ApolloServer({
   typeDefs,
