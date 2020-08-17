@@ -1,14 +1,13 @@
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 
-import Connectors from "./connector";
-
 import path from "path";
 import { fileLoader, mergeTypes, mergeResolvers } from "merge-graphql-schemas";
 
 import cors from "cors";
 
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, "./schema")));
+
 const resolvers = mergeResolvers(
   fileLoader(path.join(__dirname, "./resolver"))
 );

@@ -16,7 +16,8 @@ input UserInput {
     email : String!
     password : String!
 }
+
 type Mutation {
-    createUser(input: UserInput): User
+    register(input: UserInput): Boolean!
 }
 `;
