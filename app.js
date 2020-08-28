@@ -20,11 +20,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   tracing: true,
-  context: {
-    user: {
-      id: "5f0b29203b254440341d7864",
-    },
-  },
+  onError: {},
 });
 server.applyMiddleware({ app, graphqlPath });
 

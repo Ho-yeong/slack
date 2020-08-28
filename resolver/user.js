@@ -1,5 +1,13 @@
 import User from "../models/user";
 import bcrypt from "bcrypt";
+import _, { isTypedArray, startsWith } from "lodash";
+import { isType } from "graphql";
+
+const formatErrors = (err, models) => {
+  // _.pick({a : 1, b : 2}, 'a') => {a: 1}
+  // this is not working. I need to find other way to handle error
+  return err.errors.map((x) => _.pick(x, ["path", "message"]));
+};
 
 export default {
   Query: {
@@ -13,11 +21,53 @@ export default {
   Mutation: {
     async register(_, { input: { password, ...otherArgs } }) {
       try {
+        if (password.length < 5) {
+          return {
+            ok: false,
+            errors: [
+              {
+                path: "password",
+                message: "The password is too short",
+              },
+            ],
+          };
+        }
         const hashedPassword = await bcrypt.hash(password, 12);
-        await User.create({ ...otherArgs, password: hashedPassword });
-        return true;
+        const newUser = await User.create({
+          ...otherArgs,
+          password: hashedPassword,
+        });
+        return {
+          ok: true,
+          user: newUser,
+        };
       } catch (err) {
-        return false;
+        let errorMsg = err;
+        let errors = [];
+        if (err.errors) {
+          if (err.errors.username) {
+            errors.push({
+              path: "username",
+              message: err.errors.username.properties.message,
+            });
+          }
+          if (err.errors.email) {
+            if (err.errors.email.properties.message) {
+              errors.push({
+                path: "email",
+                message: err.errors.email.properties.message,
+              });
+            }
+          }
+        }
+        if (`${err}`.startsWith("MongoError: E11000")) {
+          errorMsg = "this email already exists";
+          errors.push({ path: "email", message: errorMsg });
+        }
+        return {
+          ok: false,
+          errors: errors,
+        };
       }
     },
   },
