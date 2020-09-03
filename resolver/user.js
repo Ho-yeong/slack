@@ -21,13 +21,14 @@ export default {
   Mutation: {
     async register(_, { input: { password, ...otherArgs } }) {
       try {
-        if (password.length < 5) {
+        if (password.length < 5 || password.length > 100) {
           return {
             ok: false,
             errors: [
               {
                 path: "password",
-                message: "The password is too short",
+                message:
+                  "The password needs to be between 8 and 100 characters long",
               },
             ],
           };
@@ -56,6 +57,14 @@ export default {
               errors.push({
                 path: "email",
                 message: err.errors.email.properties.message,
+              });
+            }
+          }
+          if (err.errors.password) {
+            if (err.errors.password.properties.message) {
+              errors.push({
+                path: "password",
+                message: err.errors.password.properties.message,
               });
             }
           }
