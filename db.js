@@ -4,15 +4,6 @@ import User from "./models/user";
 
 dotenv.config();
 
-const dummnyData = [
-  {
-    userid: 1,
-    username: "테스트",
-    email: "admin@admin.com",
-    password: "admin",
-  },
-];
-
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useFindAndModify: false,

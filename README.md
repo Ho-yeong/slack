@@ -10,15 +10,17 @@ slack-clone with node.js react.js graphql mongodb
   - cors
   - validator // vaildate email address
   - lodash // in the user Resolver
+  - jsonwebtoken // user login authentication
 
 - GraphQL
 
   - apollo-server-express
   - apollo-link-error
   - merge-graphql-schemas
-  - bcrypt (to make hash password)
+  - bcrypt (to make hashed password)
 
 - View (FrontEnd)
   - react
   - @apollo/client
   - semantic-ui-react, semantic-ui-css
+  - mobx, mobx-react

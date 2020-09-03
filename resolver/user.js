@@ -2,6 +2,7 @@ import User from "../models/user";
 import bcrypt from "bcrypt";
 import _, { isTypedArray, startsWith } from "lodash";
 import { isType } from "graphql";
+import { tryLogin } from "../auth";
 
 const formatErrors = (err, models) => {
   // _.pick({a : 1, b : 2}, 'a') => {a: 1}
@@ -19,6 +20,9 @@ export default {
     },
   },
   Mutation: {
+    async login(_, { email, password }, { models, SECRET, SECRET2 }) {
+      return tryLogin(email, password, models, SECRET, SECRET2);
+    },
     async register(_, { input: { password, ...otherArgs } }) {
       try {
         if (password.length < 5 || password.length > 100) {

@@ -6,6 +6,9 @@ import { fileLoader, mergeTypes, mergeResolvers } from "merge-graphql-schemas";
 
 import cors from "cors";
 
+const SECRET = "sdfjkl32lkjiodsjlmcvx";
+const SECRET2 = "sgfds4325rfgd342jlmcvx";
+
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, "./schema")));
 
 const resolvers = mergeResolvers(
@@ -21,6 +24,10 @@ const server = new ApolloServer({
   resolvers,
   tracing: true,
   onError: {},
+  context: {
+    SECRET,
+    SECRET2,
+  },
 });
 server.applyMiddleware({ app, graphqlPath });
 
