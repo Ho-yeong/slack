@@ -1,7 +1,6 @@
 import User from "../models/user";
 import bcrypt from "bcrypt";
 import _, { isTypedArray, startsWith } from "lodash";
-import { isType } from "graphql";
 import { tryLogin } from "../auth";
 
 const formatErrors = (err, models) => {
@@ -23,25 +22,9 @@ export default {
     async login(_, { email, password }, { models, SECRET, SECRET2 }) {
       return tryLogin(email, password, models, SECRET, SECRET2);
     },
-    async register(_, { input: { password, ...otherArgs } }) {
+    async register(_, { input }) {
       try {
-        if (password.length < 5 || password.length > 100) {
-          return {
-            ok: false,
-            errors: [
-              {
-                path: "password",
-                message:
-                  "The password needs to be between 8 and 100 characters long",
-              },
-            ],
-          };
-        }
-        const hashedPassword = await bcrypt.hash(password, 12);
-        const newUser = await User.create({
-          ...otherArgs,
-          password: hashedPassword,
-        });
+        const newUser = await User.create(input);
         return {
           ok: true,
           user: newUser,
@@ -50,6 +33,7 @@ export default {
         let errorMsg = err;
         let errors = [];
         if (err.errors) {
+          console.log(err);
           if (err.errors.username) {
             errors.push({
               path: "username",
