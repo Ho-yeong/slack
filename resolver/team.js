@@ -5,10 +5,26 @@ export default {
     async createTeam(_, { input }, { user }) {
       try {
         await Team.create({ ...input, owner: user.id });
-        return true;
-      } catch (error) {
-        console.log(error);
-        return false;
+        return {
+          ok: true,
+        };
+      } catch (err) {
+        let errors = [];
+        console.log(err);
+        if (err.errors) {
+          console.log(err);
+          if (err.errors.name) {
+            errors.push({
+              path: "name",
+              message: err.errors.username.properties.message,
+            });
+          }
+        }
+
+        return {
+          ok: false,
+          errors: errors,
+        };
       }
     },
   },

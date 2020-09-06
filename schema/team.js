@@ -7,7 +7,13 @@ type Team {
 input TeamInput {
     name : String!
 }
+
+type CreateTeamResponse {
+    ok : Boolean!
+    errors : [Error!]
+}
+
 type Mutation {
-    createTeam(input : TeamInput): Boolean!
+    createTeam(input : TeamInput): CreateTeamResponse!
 }
 `;
