@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const TeamSchema = new mongoose.Schema({
-  name: String,
+  name: { type: String, required: "Team name is required" },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

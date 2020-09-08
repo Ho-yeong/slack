@@ -1,8 +1,9 @@
 import Team from "../models/team";
+import requiresAuth from "../permissions";
 
 export default {
   Mutation: {
-    async createTeam(_, { input }, { user }) {
+    createTeam: requiresAuth.createResolver(async (_, { input }, { user }) => {
       try {
         await Team.create({ ...input, owner: user.id });
         return {
@@ -16,7 +17,7 @@ export default {
           if (err.errors.name) {
             errors.push({
               path: "name",
-              message: err.errors.username.properties.message,
+              message: err.errors.name.properties.message,
             });
           }
         }
@@ -26,6 +27,6 @@ export default {
           errors: errors,
         };
       }
-    },
+    }),
   },
 };
