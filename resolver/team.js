@@ -1,11 +1,17 @@
 import Team from "../models/team";
+import Channel from "../models/channel";
 import requiresAuth from "../permissions";
 
 export default {
+  Query: {
+    allTeams: requiresAuth.createResolver(async (_, args, { user }) => {
+      return await Team.find({ owner: user.id });
+    }),
+  },
   Mutation: {
-    createTeam: requiresAuth.createResolver(async (_, { input }, { user }) => {
+    createTeam: requiresAuth.createResolver(async (_, { name }, { user }) => {
       try {
-        await Team.create({ ...input, owner: user.id });
+        await Team.create({ name, owner: user.id });
         return {
           ok: true,
         };
@@ -28,5 +34,10 @@ export default {
         };
       }
     }),
+  },
+  Team: {
+    channels: ({ _id }, args, { user }) => {
+      Channel.find({ teamId: _id });
+    },
   },
 };

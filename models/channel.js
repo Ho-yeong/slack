@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const ChannelSchema = new mongoose.Schema({
   name: String,
-  team: {
+  teamId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Team",
   },
