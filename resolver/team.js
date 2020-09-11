@@ -11,9 +11,15 @@ export default {
   Mutation: {
     createTeam: requiresAuth.createResolver(async (_, { name }, { user }) => {
       try {
-        await Team.create({ name, owner: user.id });
+        const team = await Team.create({ name, owner: user.id });
+        await Channel.create({
+          name: "general",
+          public: true,
+          teamId: team._id,
+        });
         return {
           ok: true,
+          team,
         };
       } catch (err) {
         let errors = [];
@@ -36,8 +42,8 @@ export default {
     }),
   },
   Team: {
-    channels: ({ _id }, args, { user }) => {
-      Channel.find({ teamId: _id });
+    channels: async ({ _id }, args, { user }) => {
+      return await Channel.find({ teamId: _id });
     },
   },
 };

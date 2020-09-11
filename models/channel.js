@@ -12,7 +12,10 @@ const ChannelSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
-  public: Boolean,
+  public: {
+    type: mongoose.Schema.Types.Boolean,
+    default: true,
+  },
 });
 
 const model = mongoose.model("Channel", ChannelSchema);

@@ -6,6 +6,12 @@ const TeamSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  channels: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Channel",
+    },
+  ],
 });
 
 const model = mongoose.model("Team", TeamSchema);
