@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 
 const ChannelSchema = new mongoose.Schema({
-  name: String,
+  name: { type: String, required: "Channel name is required" },
   teamId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Team",
+    required: true,
   },
   users: [
     {

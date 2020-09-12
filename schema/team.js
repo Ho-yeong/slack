@@ -12,6 +12,7 @@ type CreateTeamResponse {
     team : Team!
     errors : [Error!]
 }
+
 type Query {
     allTeams: [Team!]!
 }

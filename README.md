@@ -26,3 +26,4 @@ slack-clone with node.js react.js graphql mongodb
   - mobx, mobx-react
   - jwt-decode (jsonwebtoken-decode) // for checking fake token
   - styled-components // for layout and CSS
+  - formik // for managing Form tag
