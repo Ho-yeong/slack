@@ -10,7 +10,7 @@ type Channel {
 
 type CreateChannelResponse {
     ok : Boolean!
-    channel : Channel!
+    channel : Channel
     errors : [Error!]
 }
 
