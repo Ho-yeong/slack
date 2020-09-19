@@ -1,6 +1,6 @@
 # slack-clone
 
-slack-clone with node.js react.js graphql mongodb
+slack-clone with node.js(express) react.js graphql mongodb
 
 # used libraries
 

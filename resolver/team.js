@@ -1,5 +1,8 @@
 import Team from "../models/team";
 import Channel from "../models/channel";
+import User from "../models/user";
+import Member from "../models/member";
+
 import requiresAuth from "../permissions";
 
 export default {
@@ -40,6 +43,46 @@ export default {
         };
       }
     }),
+    addTeamMember: requiresAuth.createResolver(
+      async (_, { email, teamId }, { user }) => {
+        try {
+          const team = await Team.findOne({ _id: teamId });
+          if (team.owner != user.id) {
+            return {
+              ok: false,
+              errors: [
+                {
+                  path: "email",
+                  message: "You cannot add members to the team",
+                },
+              ],
+            };
+          }
+          const userToAdd = await User.findOne({ email });
+          if (!userToAdd) {
+            return {
+              ok: false,
+              errors: [
+                {
+                  path: "email",
+                  message: "Could not find user with this email",
+                },
+              ],
+            };
+          }
+          await Member.create({ teamId, userId: userToAdd._id });
+          return {
+            ok: true,
+          };
+        } catch (err) {
+          console.log(err);
+          return {
+            ok: false,
+            errors: [{ path: "email", message: "invalid email" }],
+          };
+        }
+      }
+    ),
   },
   Team: {
     channels: async ({ _id }, args, { user }) => {
