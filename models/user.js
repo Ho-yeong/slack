@@ -9,7 +9,6 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     trim: true,
-    lowercase: true,
     unique: true,
     required: "Email address is required",
     validate: [isEmail, "Please fill a valid email address"],
@@ -19,7 +18,6 @@ const UserSchema = new mongoose.Schema({
     required: "Password is required",
     minlength: [8, "The password needs to be between 8 and 20 long"],
     maxlength: [20, "The password needs to be between 8 and 20 long"],
-    unique: true,
   },
   channel_member: [
     {

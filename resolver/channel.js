@@ -1,6 +1,5 @@
 import Channel from "../models/channel";
-import user from "../schema/user";
-import team from "./team";
+import Team from "../models/team";
 
 import requiresAuth from "../permissions";
 
@@ -14,6 +13,18 @@ export default {
     createChannel: requiresAuth.createResolver(
       async (_, { name, teamId }, { user }) => {
         try {
+          const team = await Team.findOne({ _id: teamId });
+          if (team.owner != user.id) {
+            return {
+              ok: false,
+              errors: [
+                {
+                  path: "name",
+                  message: "You cannot make channel in this team",
+                },
+              ],
+            };
+          }
           const channel = await Channel.create({
             name,
             teamId,

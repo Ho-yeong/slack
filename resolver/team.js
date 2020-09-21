@@ -2,6 +2,7 @@ import Team from "../models/team";
 import Channel from "../models/channel";
 import User from "../models/user";
 import Member from "../models/member";
+import db from "mongoose";
 
 import requiresAuth from "../permissions";
 
@@ -10,9 +11,24 @@ export default {
     allTeams: requiresAuth.createResolver(async (_, args, { user }) => {
       return await Team.find({ owner: user.id });
     }),
+    inviteTeams: requiresAuth.createResolver(async (_, args, { user }) => {
+      const TeamMember = await Member.find({
+        userId: "5f68dd51a4558824d02ca400",
+      });
+      const inviteTeams = [];
+      TeamMember.forEach((tm) => {
+        const team = Team.findById(tm.teamId);
+        inviteTeams.push(team);
+      });
+
+      return inviteTeams;
+    }),
   },
   Mutation: {
     createTeam: requiresAuth.createResolver(async (_, { name }, { user }) => {
+      // MongoDB Transaction with Mongoose
+      const SESSION = await db.startSession();
+      await SESSION.startTransaction();
       try {
         const team = await Team.create({ name, owner: user.id });
         await Channel.create({
@@ -36,11 +52,17 @@ export default {
             });
           }
         }
-
+        if (`${err}`.startsWith("MongoError: E11000")) {
+          errorMsg = "this name already exists";
+          errors.push({ path: "name", message: errorMsg });
+        }
+        await SESSION.abortTransaction();
         return {
           ok: false,
           errors: errors,
         };
+      } finally {
+        SESSION.endSession();
       }
     }),
     addTeamMember: requiresAuth.createResolver(

@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import Channel from "./models/channel";
 
 dotenv.config();
 
