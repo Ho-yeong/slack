@@ -13,7 +13,7 @@ export default {
     }),
     inviteTeams: requiresAuth.createResolver(async (_, args, { user }) => {
       const TeamMember = await Member.find({
-        userId: "5f68dd51a4558824d02ca400",
+        userId: user.id,
       });
       const inviteTeams = [];
       TeamMember.forEach((tm) => {
