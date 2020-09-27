@@ -20,7 +20,8 @@ export default {
               errors: [
                 {
                   path: "name",
-                  message: "You cannot make channel in this team",
+                  message:
+                    "You have to be the owner of this team to create channels",
                 },
               ],
             };
