@@ -4,15 +4,15 @@ type Message {
     text : String!
     user : User!
     channel : Channel!
+    createdAt : String!
 }
 
-
-input MessageInput {
-    channelId : Int!
-    text : String!
+type Query {
+    messages(channelId : String!) : [Message!]!
 }
+
 
 type Mutation {
-    createMessage(input : MessageInput): Boolean!
+    createMessage(channelId : String!, text : String!): Boolean!
 }
 `;

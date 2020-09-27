@@ -1,17 +1,20 @@
 import mongoose from "mongoose";
 
-const MessagesSchema = new mongoose.Schema({
+const MessageSchema = new mongoose.Schema({
   text: String,
-  channel: {
+  channelId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Channel",
   },
-  username: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  createdAt: {
+    type: mongoose.Schema.Types.Date,
+  },
 });
 
-const model = mongoose.model("Messages", MessagesSchema);
+const model = mongoose.model("Message", MessageSchema);
 
 export default model;
