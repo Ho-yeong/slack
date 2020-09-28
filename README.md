@@ -11,6 +11,8 @@ slack-clone with node.js(express) react.js graphql mongodb
   - validator // vaildate email address
   - lodash // in the user Resolver
   - jsonwebtoken // user login authentication
+  - graphql-subscriptions
+  - subscriptions-transport-ws
 
 - GraphQL
 
@@ -27,3 +29,7 @@ slack-clone with node.js(express) react.js graphql mongodb
   - jwt-decode (jsonwebtoken-decode) // for checking fake token
   - styled-components // for layout and CSS
   - formik // for managing Form tag
+    // for WebSocket
+  - apollo-link-ws
+  - apollo-utilities
+  - subscriptions-transport-ws

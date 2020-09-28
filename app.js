@@ -43,7 +43,8 @@ const addUser = async (req, res, next) => {
 app.use(addUser);
 
 const graphqlPath = "/graphql";
-const server = new ApolloServer({
+
+const graphqlServer = new ApolloServer({
   typeDefs,
   resolvers,
   tracing: true,
@@ -52,7 +53,8 @@ const server = new ApolloServer({
     return { user: req.user, SECRET, SECRET2 };
   },
 });
-server.applyMiddleware({ app, graphqlPath });
+
+graphqlServer.applyMiddleware({ app, graphqlPath });
 
 app.get("/", (req, res) => {
   console.log(req.headers);
