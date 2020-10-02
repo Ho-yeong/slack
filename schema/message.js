@@ -7,6 +7,10 @@ type Message {
     createdAt : String!
 }
 
+type Subscription {
+    newChannelMessage(channelId : String!): Message!
+}
+
 type Query {
     messages(channelId : String!) : [Message!]!
 }
