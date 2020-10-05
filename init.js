@@ -6,8 +6,7 @@ import dotenv from "dotenv";
 import { createServer } from "http";
 import { execute, subscribe } from "graphql";
 import { SubscriptionServer } from "subscriptions-transport-ws";
-
-import { typeDefs } from "./app";
+import { schema } from "./app";
 
 dotenv.config();
 
@@ -17,11 +16,11 @@ const server = createServer(app);
 
 const handleListening = () => {
   console.log(`Listening on http://localhost:${PORT}`);
-  new SubscriptionServer(
+  const NewSubscriptionServer = new SubscriptionServer(
     {
       execute,
       subscribe,
-      schema: typeDefs,
+      schema,
     },
     {
       server,

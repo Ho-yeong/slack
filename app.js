@@ -1,5 +1,6 @@
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
+import { makeExecutableSchema } from "graphql-tools";
 
 import path from "path";
 import { fileLoader, mergeTypes, mergeResolvers } from "merge-graphql-schemas";
@@ -16,6 +17,11 @@ const typeDefs = mergeTypes(fileLoader(path.join(__dirname, "./schema")));
 const resolvers = mergeResolvers(
   fileLoader(path.join(__dirname, "./resolver"))
 );
+
+export const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+});
 
 const app = express();
 app.use(cors("*"));
@@ -45,11 +51,10 @@ app.use(addUser);
 const graphqlPath = "/graphql";
 
 const graphqlServer = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema,
   tracing: true,
   onError: {},
-  context: ({ req }) => {
+  context: ({ req, connection }) => {
     return { user: req.user, SECRET, SECRET2 };
   },
 });

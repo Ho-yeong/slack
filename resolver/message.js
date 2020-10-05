@@ -45,9 +45,8 @@ export default {
             userId: user.id,
             createdAt: new Date(),
           });
-
           pubsub.publish(NEW_CHANNEL_MESSAGE, {
-            channelId: args.channelId,
+            channelId,
             newChannelMessage: message,
           });
 
