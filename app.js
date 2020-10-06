@@ -54,8 +54,15 @@ const graphqlServer = new ApolloServer({
   schema,
   tracing: true,
   onError: {},
-  context: ({ req, connection }) => {
-    return { user: req.user, SECRET, SECRET2 };
+  subscriptions: {
+    path: "/subscriptions",
+  },
+  context: async ({ req, connection }) => {
+    return {
+      user: connection ? connection.context : req.user,
+      SECRET,
+      SECRET2,
+    };
   },
 });
 

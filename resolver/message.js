@@ -45,10 +45,23 @@ export default {
             userId: user.id,
             createdAt: new Date(),
           });
-          pubsub.publish(NEW_CHANNEL_MESSAGE, {
-            channelId,
-            newChannelMessage: message,
-          });
+
+          const asyncFunc = async () => {
+            const currentUser = await User.findById(user.id);
+
+            pubsub.publish(NEW_CHANNEL_MESSAGE, {
+              channelId,
+              newChannelMessage: {
+                _id: message._id,
+                text: message.text,
+                channelId: message.channelId,
+                userId: message.userId,
+                createdAt: message.createdAt,
+                user: currentUser,
+              },
+            });
+          };
+          asyncFunc();
 
           return true;
         } catch (error) {
