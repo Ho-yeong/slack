@@ -16,7 +16,7 @@ const server = createServer(app);
 
 const handleListening = () => {
   console.log(`Listening on http://localhost:${PORT}`);
-  const NewSubscriptionServer = new SubscriptionServer(
+  new SubscriptionServer(
     {
       execute,
       subscribe,
