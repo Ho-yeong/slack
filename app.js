@@ -56,6 +56,7 @@ const graphqlServer = new ApolloServer({
   onError: {},
   subscriptions: {
     path: "/subscriptions",
+    
   },
   context: async ({ req, connection }) => {
     return {
