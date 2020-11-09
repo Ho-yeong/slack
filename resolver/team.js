@@ -7,35 +7,25 @@ import db from "mongoose";
 import requiresAuth from "../permissions";
 
 export default {
-  Query: {
-    allTeams: requiresAuth.createResolver(async (_, args, { user }) => {
-      return await Team.find({ owner: user.id });
-    }),
-    inviteTeams: requiresAuth.createResolver(async (_, args, { user }) => {
-      const TeamMember = await Member.find({
-        userId: user.id,
-      });
-      const inviteTeams = [];
-      TeamMember.forEach((tm) => {
-        const team = Team.findById(tm.teamId);
-        inviteTeams.push(team);
-      });
-
-      return inviteTeams;
-    }),
-  },
   Mutation: {
     createTeam: requiresAuth.createResolver(async (_, { name }, { user }) => {
       // MongoDB Transaction with Mongoose
+      console.log(user);
       const SESSION = await db.startSession();
       await SESSION.startTransaction();
       try {
-        const team = await Team.create({ name, owner: user.id });
+        const team = await Team.create({ name });
         await Channel.create({
           name: "general",
           public: true,
           teamId: team._id,
         });
+        await Member.create({
+          teamId : team._id,
+          userId : user.id,
+          admin : true
+        });
+
         return {
           ok: true,
           team,

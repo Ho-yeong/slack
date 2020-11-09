@@ -4,11 +4,11 @@ type User {
     username : String!
     email : String!
     password : String!
-    teams : [Team!]!
+    teams : [Team]!
 }
 type Query {
     allUser : [User]
-    getUser(_id : ID!) : User
+    me : User!
 }
 
 type RegisterResponse {

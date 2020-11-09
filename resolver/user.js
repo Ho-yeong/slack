@@ -1,7 +1,11 @@
 import User from "../models/user";
+import Team from "../models/team";
+import Member from "../models/member";
 import bcrypt from "bcrypt";
 import _, { isTypedArray, startsWith } from "lodash";
 import { tryLogin } from "../auth";
+import requiresAuth from "../permissions";
+import { TypeMetaFieldDef } from "graphql";
 
 const formatErrors = (err, models) => {
   // _.pick({a : 1, b : 2}, 'a') => {a: 1}
@@ -10,12 +14,29 @@ const formatErrors = (err, models) => {
 };
 
 export default {
+  User : {
+    teams : async (_, args, { user }) => {
+      return await Member.find({userId : user.id }).populate('teamId').exec( async (err, res) => {
+        let teams = [];
+        if(err) return console.log(err);
+        await res.map((v) => {
+          teams.push({
+            _id : v.teamId._id,
+            name : v.teamId.name,
+            channels : v.teamId.channels
+          })
+        })
+        console.log(teams);
+        return teams;
+      })
+    }
+  },
   Query: {
-    async allUser() {
+    allUser : requiresAuth.createResolver ( async () => {
       return await User.find();
-    },
-    async getUser(root, { _id }) {
-      return await User.findById(_id);
+    }),
+    me : async (_,args, { user }) => {
+      return await User.findById(user.id);
     },
   },
   Mutation: {
