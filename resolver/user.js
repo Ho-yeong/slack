@@ -6,6 +6,8 @@ import _, { isTypedArray, startsWith } from "lodash";
 import { tryLogin } from "../auth";
 import requiresAuth from "../permissions";
 import { TypeMetaFieldDef } from "graphql";
+import team from "../schema/team";
+import db from "mongoose";
 
 const formatErrors = (err, models) => {
   // _.pick({a : 1, b : 2}, 'a') => {a: 1}
@@ -15,21 +17,24 @@ const formatErrors = (err, models) => {
 
 export default {
   User : {
-    teams : async (_, args, { user }) => {
-      return await Member.find({userId : user.id }).populate('teamId').exec( async (err, res) => {
-        let teams = [];
-        if(err) return console.log(err);
-        await res.map((v) => {
-          teams.push({
-            _id : v.teamId._id,
-            name : v.teamId.name,
-            channels : v.teamId.channels
-          })
-        })
-        console.log(teams);
-        return teams;
-      })
-    }
+    teams :  requiresAuth.createResolver ( async (_, args, { user }) => {
+      try{
+        const member = await Member.find({userId : user.id })
+        
+        const asyncFunc = async (member) => {
+          let list = [];
+          for(const item of member){
+            list.push(await Team.findById(item.teamId));
+          }
+          return list;        
+        }
+        console.log( await asyncFunc(member))
+        return await asyncFunc(member);
+      }catch(err){
+        console.log(err)
+      }
+      }
+    ),
   },
   Query: {
     allUser : requiresAuth.createResolver ( async () => {
