@@ -28,20 +28,15 @@ const handleListening = () => {
       schema,
       onConnect: async ({token, refreshToken} , webSocket) => {
         if (token && refreshToken) {
-          let user = null;
           try {
-            const payload = jwt.verify(token, SECRET);
-            user = payload.user;
+            const { user } = jwt.verify(token, SECRET);
+            return user;
           } catch (err) {
             const newTokens = await refreshTokens(token, refreshToken, SECRET);
-            user = newTokens.user;
+            return {user : newTokens.user};
           }
-          if (!user){
-            throw new Error("Invalid auth tokens");
-          }
-          return true;
         }
-      throw new Error('Missing auth token!');
+      return {};
       },
     },
     {

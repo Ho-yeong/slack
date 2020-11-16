@@ -3,7 +3,8 @@ type Team {
     _id : ID!
     name : String!
     members : [User!]
-    channels : [Channel!]
+    channels : [Channel!]!
+    admin : Boolean
 }
 
 type CreateTeamResponse {

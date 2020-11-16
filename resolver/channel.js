@@ -1,6 +1,6 @@
 import Channel from "../models/channel";
 import Team from "../models/team";
-
+import Member from "../models/member";
 import requiresAuth from "../permissions";
 
 export default {
@@ -13,8 +13,8 @@ export default {
     createChannel: requiresAuth.createResolver(
       async (_, { name, teamId }, { user }) => {
         try {
-          const team = await Team.findOne({ _id: teamId });
-          if (team.owner != user.id) {
+          const memberPromise = await Member.findOne({teamId, userId : user.id});
+          if (!memberPromise.admin) {
             return {
               ok: false,
               errors: [

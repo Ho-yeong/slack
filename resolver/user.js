@@ -18,21 +18,32 @@ const formatErrors = (err, models) => {
 export default {
   User : {
     teams :  requiresAuth.createResolver ( async (_, args, { user }) => {
-      try{
-        const member = await Member.find({userId : user.id })
-        
-        const asyncFunc = async (member) => {
-          let list = [];
-          for(const item of member){
-            list.push(await Team.findById(item.teamId));
+        try{
+          const member = await Member.find({userId : user.id })
+          
+          const asyncFunc = async (member) => {
+            let list = [];
+            const promises = member.map( async (item) => {
+              const team = await Team.findById(item.teamId);
+              list.push({
+                ...team._doc,
+                admin : item.admin
+              })
+            })
+            await Promise.all(promises);
+            // for(const item of member){
+            //   const team = await Team.findById(item.teamId);
+            //   list.push(
+            //     await Team.findById(item.teamId),
+            //     item.admin
+            //   );
+            // }
+            return list;        
           }
-          return list;        
+          return await asyncFunc(member);
+        }catch(err){
+          console.log(err)
         }
-        console.log( await asyncFunc(member))
-        return await asyncFunc(member);
-      }catch(err){
-        console.log(err)
-      }
       }
     ),
   },
@@ -40,9 +51,9 @@ export default {
     allUser : requiresAuth.createResolver ( async () => {
       return await User.find();
     }),
-    me : async (_,args, { user }) => {
+    me : requiresAuth.createResolver (async (_,args, { user }) => {
       return await User.findById(user.id);
-    },
+    }),
   },
   Mutation: {
     async login(_, { email, password }, { models, SECRET, SECRET2 }) {

@@ -58,8 +58,8 @@ export default {
     addTeamMember: requiresAuth.createResolver(
       async (_, { email, teamId }, { user }) => {
         try {
-          const team = await Team.findOne({ _id: teamId });
-          if (team.owner != user.id) {
+          const memberPromise = await Member.findOne({teamId, userId : user.id});
+          if (!memberPromise.admin) {
             return {
               ok: false,
               errors: [
@@ -82,7 +82,7 @@ export default {
               ],
             };
           }
-          await Member.create({ teamId, userId: userToAdd._id });
+          await Member.create({ teamId, userId: userToAdd._id, admin : false });
           return {
             ok: true,
           };
