@@ -50,7 +50,7 @@ npm start
 
 ## Front End Repository
 
-###[Slack-client](https://github.com/Ho-yeong/slack-client)
+[Slack-client](https://github.com/Ho-yeong/slack-client)
 
 ## Main UI
 
